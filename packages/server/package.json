@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "ts-node-dev --respawn --files ./src/index.ts",
+    "build": "tsc --watch --p tsconfig.json"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "ws": "^8.2.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.9.1",
+    "@types/ws": "^7.4.7",
+    "ts-node-dev": "^1.1.8"
+  }
+}

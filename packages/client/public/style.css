@@ -1,0 +1,8 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: rgb(248, 249, 250);
+  height: 100%;
+}
