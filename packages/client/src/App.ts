@@ -3,7 +3,7 @@ import Layout from "./components/common/Layout.js";
 import Component from "./components/core/Component.js";
 import Form from "./components/form/Form.js";
 import List from "./components/list/List.js";
-import { ListInfo } from "./types/global.js";
+import { CardInfo, ListInfo } from "./types/global.js";
 
 interface Props {
   webSocket: WebSocket;
@@ -90,7 +90,7 @@ class App extends Component<Props, State> {
         open: list.id === addCardFormOpenId,
         className: "add-card",
         placeholder: "Add a card",
-        onSubmit: (name: string) => {},
+        onSubmit: (name: string) => this.handleAddCard(list.id, name),
         onOpenForm: () => {
           this.setState({ ...this.state, addCardFormOpenId: list.id });
         },
@@ -104,7 +104,7 @@ class App extends Component<Props, State> {
       open: addListFormOpen,
       className: "list add-list",
       placeholder: "Add another list",
-      onSubmit: (name: string) => {},
+      onSubmit: this.handleAddList,
       onOpenForm: this.handleOpenAddListForm,
       onCloseForm: this.handleCloseAddListForm,
     });
@@ -117,6 +117,30 @@ class App extends Component<Props, State> {
         this.handleCloseCardForm();
         this.handleCloseAddListForm();
       }
+    }
+  };
+
+  handleAddList = (name: string) => {
+    const list: ListInfo = {
+      id: Date.now().toString(),
+      name,
+      cards: [],
+    };
+
+    this.setState({ ...this.state, lists: [...this.state.lists, list] });
+  };
+
+  handleAddCard = (id: string, name: string) => {
+    const { lists } = this.state;
+    const card: CardInfo = {
+      id: Date.now().toString(),
+      name,
+    };
+
+    const list = lists.find((list) => list.id === id);
+    if (list) {
+      list.cards = [...list.cards, card];
+      this.setState({ ...this.state, lists });
     }
   };
 
