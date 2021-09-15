@@ -1,6 +1,10 @@
+import App from "./App.js";
+
 const $app = document.getElementById("app");
 const webSocket = new WebSocket("ws://localhost:3000");
 
 if ($app) {
-  console.log("asssasdd");
+  new App($app, {
+    webSocket,
+  });
 }
