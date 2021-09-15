@@ -5,6 +5,8 @@ interface Props {
   className: string;
   card: CardInfo;
   listId: string;
+  onDragStart: (draggedCardListId: string, draggedCard: CardInfo) => void;
+  onDragEnd: (e: DragEvent) => void;
 }
 
 interface State {}
@@ -17,6 +19,9 @@ class Card extends Component<Props, State> {
 
     this.$parent.appendChild(this.$target);
     this.render();
+
+    this.$target.addEventListener("dragstart", this.handleDragStart);
+    this.$target.addEventListener("dragend", this.handleDragEnd);
   }
 
   render() {
@@ -29,6 +34,16 @@ class Card extends Component<Props, State> {
     this.$target.draggable = true;
     this.$target.textContent = card.name;
   }
+
+  handleDragStart = (e: DragEvent) => {
+    const { listId, card, onDragStart } = this.props;
+    onDragStart(listId, card);
+  };
+
+  handleDragEnd = (e: DragEvent) => {
+    const { onDragEnd } = this.props;
+    onDragEnd(e);
+  };
 }
 
 export default Card;

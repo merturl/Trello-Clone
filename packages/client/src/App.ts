@@ -13,6 +13,8 @@ interface State {
   lists: ListInfo[];
   addCardFormOpenId: string;
   addListFormOpen: boolean;
+  draggedCard: CardInfo | null;
+  draggedCardListId: string | null;
 }
 
 class App extends Component<Props, State> {
@@ -53,6 +55,8 @@ class App extends Component<Props, State> {
       ],
       addListFormOpen: false,
       addCardFormOpenId: "",
+      draggedCard: null,
+      draggedCardListId: null,
     };
     this.$target = document.createElement("div");
     this.$parent.appendChild(this.$target);
@@ -72,6 +76,7 @@ class App extends Component<Props, State> {
       const listComponent = new List(listWrapComponent.$target, {
         className: "list",
         list,
+        onDragOver: this.handleDragOver,
       });
       const cardContainer = new Layout(listComponent.$target, {
         className: "card-container",
@@ -81,6 +86,8 @@ class App extends Component<Props, State> {
           className: "card",
           listId: list.id,
           card,
+          onDragStart: this.handleDragStart,
+          onDragEnd: this.handleDragEnd,
         });
       });
       const CardFormWrapComponent = new Layout(listComponent.$target, {
@@ -110,8 +117,72 @@ class App extends Component<Props, State> {
     });
   };
 
+  handleDragStart = (draggedCardListId: string, draggedCard: CardInfo) => {
+    requestAnimationFrame(() => {
+      this.setState({
+        ...this.state,
+        draggedCard,
+        draggedCardListId,
+      });
+    });
+  };
+
+  handleDragEnd = () => {
+    this.setState({
+      ...this.state,
+      draggedCard: null,
+      draggedCardListId: null,
+    });
+  };
+
+  handleDragOver = (
+    draggedOverCardId: string | null,
+    draggedOverList: ListInfo
+  ) => {
+    const { lists } = this.state;
+    const { draggedCardListId, draggedCard } = this.state;
+
+    if (!draggedCardListId || !draggedCard) return;
+
+    const draggedOverListIndex = lists.findIndex(
+      (list) => list.id === draggedOverList.id
+    );
+    const dscCard = lists[draggedOverListIndex].cards.find(
+      (card) => card.id === draggedCard.id
+    );
+    if (dscCard) {
+      if (draggedOverCardId === dscCard.id) return;
+      const draggedOverCardIndex = lists[draggedOverListIndex].cards.findIndex(
+        (card) => card.id === draggedOverCardId
+      );
+      const draggedCardIndex = lists[draggedOverListIndex].cards.findIndex(
+        (card) => card.id === dscCard.id
+      );
+
+      this.move(
+        lists[draggedOverListIndex].cards,
+        draggedCardIndex,
+        draggedOverCardIndex
+      );
+      this.setState({ ...this.state, lists });
+    } else {
+      lists.map((list) => {
+        list.cards = list.cards.filter((card) => card.id !== draggedCard.id);
+      });
+      lists[draggedOverListIndex].cards.splice(0, 0, draggedCard);
+      this.setState({ ...this.state, lists });
+    }
+  };
+
+  move<T>(array: Array<T>, from: number, to: number) {
+    var element = array[from];
+    array.splice(from, 1);
+    array.splice(to, 0, element);
+  }
+
   handleOnClickOutside = (e: MouseEvent) => {
     const target = <HTMLDivElement>e.target;
+
     if (target) {
       if (!target.closest(".list")) {
         this.handleCloseCardForm();
