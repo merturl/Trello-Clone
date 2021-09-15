@@ -11,8 +11,7 @@ class Layout extends Component<Props, State> {
 
   constructor($parent: HTMLElement, props: Props) {
     super($parent, props);
-    this.state = {};
-    document.createDocumentFragment;
+
     this.$target = document.createElement("div");
     this.$parent.appendChild(this.$target);
     this.render();
