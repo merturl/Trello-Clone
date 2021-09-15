@@ -11,6 +11,8 @@ interface Props {
 
 interface State {
   lists: ListInfo[];
+  addCardFormOpenId: string;
+  addListFormOpen: boolean;
 }
 
 class App extends Component<Props, State> {
@@ -49,15 +51,19 @@ class App extends Component<Props, State> {
           cards: [],
         },
       ],
+      addListFormOpen: false,
+      addCardFormOpenId: "",
     };
     this.$target = document.createElement("div");
     this.$parent.appendChild(this.$target);
     this.render();
+    this.$target.addEventListener("mousedown", this.handleOnClickOutside);
   }
+
   render = () => {
     this.$target.innerHTML = "";
     this.$target.className = "boards";
-    const { lists } = this.state;
+    const { lists, addListFormOpen, addCardFormOpenId } = this.state;
 
     lists.map((list) => {
       const listWrapComponent = new Layout(this.$target, {
@@ -81,25 +87,49 @@ class App extends Component<Props, State> {
         className: "add-card-wrap",
       });
       new Form(CardFormWrapComponent.$target, {
-        open: true,
+        open: list.id === addCardFormOpenId,
         className: "add-card",
         placeholder: "Add a card",
         onSubmit: (name: string) => {},
-        onOpenForm: () => {},
-        onCloseForm: () => {},
+        onOpenForm: () => {
+          this.setState({ ...this.state, addCardFormOpenId: list.id });
+        },
+        onCloseForm: this.handleCloseCardForm,
       });
     });
     const ListFormWrapComponent = new Layout(this.$target, {
       className: "add-list-wrap",
     });
     new Form(ListFormWrapComponent.$target, {
-      open: true,
+      open: addListFormOpen,
       className: "list add-list",
       placeholder: "Add another list",
       onSubmit: (name: string) => {},
-      onOpenForm: () => {},
-      onCloseForm: () => {},
+      onOpenForm: this.handleOpenAddListForm,
+      onCloseForm: this.handleCloseAddListForm,
     });
+  };
+
+  handleOnClickOutside = (e: MouseEvent) => {
+    const target = <HTMLDivElement>e.target;
+    if (target) {
+      if (!target.closest(".list")) {
+        this.handleCloseCardForm();
+        this.handleCloseAddListForm();
+      }
+    }
+  };
+
+  handleCloseCardForm = () => {
+    this.setState({ ...this.state, addCardFormOpenId: "" });
+  };
+
+  handleOpenAddListForm = () => {
+    this.setState({ ...this.state, addListFormOpen: true });
+  };
+
+  handleCloseAddListForm = () => {
+    this.setState({ ...this.state, addListFormOpen: false });
   };
 }
 
