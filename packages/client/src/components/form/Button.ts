@@ -26,13 +26,10 @@ class Button extends Component<Props, State> {
     const { className, textContent } = this.props;
     this.$target.className = className;
     this.$target.textContent = textContent;
-    this.$target.type = "button";
   }
 
-  mounted() {}
-
   handleClick = (e: Event) => {
-    e.stopPropagation();
+    e.preventDefault();
 
     this.props.onClick(e);
   };

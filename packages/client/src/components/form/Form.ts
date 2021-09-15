@@ -61,7 +61,9 @@ class Form extends Component<Props, State> {
     }
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e: Event) => {
+    e.preventDefault();
+
     const inputElement = this.$target.querySelector("input");
     if (inputElement && inputElement.value) {
       this.props.onSubmit(inputElement.value);
