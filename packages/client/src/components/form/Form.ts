@@ -2,9 +2,11 @@ import Layout from "../common/Layout.js";
 import Component from "../core/Component.js";
 import Button from "./Button.js";
 import Input from "./Input.js";
+import Textarea from "./Textarea.js";
 
 interface Props {
   open: boolean;
+  type: string;
   className: string;
   placeholder: string;
   onSubmit: (name: string) => void;
@@ -28,15 +30,30 @@ class Form extends Component<Props, State> {
 
   render() {
     this.$target.innerHTML = "";
-    const { className, placeholder, open, onOpenForm, onCloseForm } =
-      this.props;
+    const {
+      className,
+      type,
+      placeholder,
+      open,
+      onOpenForm,
+      onCloseForm,
+      onSubmit,
+    } = this.props;
     this.$target.className = className;
 
     if (open) {
-      new Input(this.$target, {
-        className: `${className}__input`,
-        placeholder,
-      });
+      if (type === "list") {
+        new Input(this.$target, {
+          className: `${className}__input`,
+          placeholder,
+        });
+      } else {
+        new Textarea(this.$target, {
+          className: `${className}__textarea`,
+          placeholder,
+          onKeyPress: onSubmit,
+        });
+      }
 
       const ButtonContainer = new Layout(this.$target, {
         className: "button-container",
@@ -63,10 +80,18 @@ class Form extends Component<Props, State> {
 
   handleSubmit = (e: Event) => {
     e.preventDefault();
+    const { type } = this.props;
 
-    const inputElement = this.$target.querySelector("input");
-    if (inputElement && inputElement.value) {
-      this.props.onSubmit(inputElement.value);
+    if (type === "list") {
+      const inputElement = this.$target.querySelector("input");
+      if (inputElement && inputElement.value.length > 0) {
+        this.props.onSubmit(inputElement.value);
+      }
+    } else {
+      const textareaElement = this.$target.querySelector("textarea");
+      if (textareaElement) {
+        this.props.onSubmit(textareaElement.value);
+      }
     }
   };
 }

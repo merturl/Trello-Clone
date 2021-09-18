@@ -97,6 +97,7 @@ class App extends Component<Props, State> {
         open: list.id === addCardFormOpenId,
         className: "add-card",
         placeholder: "Add a card",
+        type: "card",
         onSubmit: (name: string) => this.handleAddCard(list.id, name),
         onOpenForm: () => {
           this.setState({ ...this.state, addCardFormOpenId: list.id });
@@ -109,7 +110,8 @@ class App extends Component<Props, State> {
     });
     new Form(ListFormWrapComponent.$target, {
       open: addListFormOpen,
-      className: "list add-list",
+      className: "add-list",
+      type: "list",
       placeholder: "Add another list",
       onSubmit: this.handleAddList,
       onOpenForm: this.handleOpenAddListForm,
