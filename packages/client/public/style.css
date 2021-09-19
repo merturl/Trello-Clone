@@ -6,15 +6,23 @@
 body {
   margin: 0;
   background-color: rgb(43, 112, 181);
-  height: 100%;
 }
 
 #app {
   display: flex;
 }
-
+body,
+#app,
 .main {
+  height: 100%;
+}
+.main {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: absolute;
 }
 
 .top-nav {
@@ -65,11 +73,17 @@ body {
 }
 
 .board {
+  overflow: auto;
   padding: 1rem;
   display: flex;
   flex-direction: row;
-  position: absolute;
   height: 100%;
+}
+.board-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
 
 .list-wrap,
@@ -79,13 +93,18 @@ body {
   margin: 0 0.4rem;
   vertical-align: top;
   white-space: nowrap;
-  width: 272px;
+  min-width: 272px;
 }
 
 .list-wrap > .list {
   background-color: #ebecf0;
   border-radius: 0.5rem;
   padding: 0.3rem;
+  flex-direction: column;
+  max-height: 100%;
+  position: relative;
+  white-space: normal;
+  overflow: auto;
 }
 
 .add-list {
@@ -169,14 +188,6 @@ textarea {
   font-weight: 700;
   white-space: nowrap;
   width: 100%;
-}
-
-.dragging {
-  background-color: red;
-  color: red;
-  transform: rotate(3deg);
-  position: absolute;
-  width: 272px;
 }
 
 .add-card__open {
