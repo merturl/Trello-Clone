@@ -15,7 +15,6 @@ class App {
     this.app = express();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
-    this.initializeErrorHandling();
   }
 
   public getServer() {
@@ -39,8 +38,6 @@ class App {
 
     this.app.use("/", router);
   }
-
-  private initializeErrorHandling() {}
 }
 
 export default App;
