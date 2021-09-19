@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "ts-node-dev --respawn --files ./src/index.ts",
-    "build": "tsc --watch --p tsconfig.json"
+    "build": "tsc --p tsconfig.json && node ./build/index.js"
   },
   "dependencies": {
     "express": "^4.17.1",

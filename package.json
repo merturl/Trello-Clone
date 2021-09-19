@@ -6,9 +6,12 @@
     "packages/*"
   ],
   "scripts": {
-    "client": "yarn workspace client run start",
-    "server": "yarn workspace server run start",
-    "start": "concurrently \"yarn server\" \"yarn client\" "
+    "client:start": "yarn workspace client run start",
+    "server::start": "yarn workspace server run start",
+    "start": "concurrently \"yarn server::start\" \"yarn client:start\" ",
+    "client:build": "yarn workspace client run build",
+    "server:build": "yarn workspace server run build",
+    "build": "concurrently \"yarn server:build\" \"yarn client:build\" "
   },
   "private": true,
   "devDependencies": {
