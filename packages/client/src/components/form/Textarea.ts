@@ -30,12 +30,14 @@ class Textarea extends Component<Props, State> {
   }
 
   handleKeyUp = (e: KeyboardEvent) => {
-    if (this.$target.value.trim().length > 0) {
-      if (e.key === "Enter") {
-        this.props.onKeyPress(this.$target.value);
+    if (e.key === "Enter") {
+      if (!e.shiftKey) {
+        if (this.$target.value.trim().length === 0) {
+          this.$target.value = "";
+        } else {
+          this.props.onKeyPress(this.$target.value);
+        }
       }
-    } else {
-      this.$target.value = "";
     }
   };
 }
