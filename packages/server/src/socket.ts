@@ -1,6 +1,12 @@
 import http from "http";
 import WebSocket from "ws";
-import { MessageDTO, NewCard, NewList, NewLists } from "./board/board.entity";
+import {
+  List,
+  MessageDTO,
+  NewCard,
+  NewList,
+  NewLists,
+} from "./board/board.entity";
 import BoardsRepository from "./board/board.repository";
 import { BoardService } from "./board/board.service";
 
@@ -72,38 +78,35 @@ class Socket {
         if (message.type === "list") {
           const target = <NewList>message.target;
           const lists = this.boardService.addList(target.name);
-          this.socket.clients.forEach((client) => {
-            client.send(JSON.stringify(lists));
-          });
+          this.handleBrodcast(lists);
           break;
         } else if (message.type === "card") {
           const target = <NewCard>message.target;
-          const cards = this.boardService.addCard(target.listId, target.name);
-          this.socket.clients.forEach((client) => {
-            client.send(JSON.stringify(cards));
-          });
+          const lists = this.boardService.addCard(target.listId, target.name);
+          this.handleBrodcast(lists);
           break;
         }
       }
       case "update": {
         const target = <NewLists>message.target;
         const lists = this.boardService.updateLists(target.lists);
-        this.socket.clients.forEach((client) => {
-          client.send(JSON.stringify(lists));
-        });
+        this.handleBrodcast(lists);
         break;
       }
       default: {
         const lists = this.boardService.getLists();
-        this.socket.clients.forEach((client) => {
-          client.send(JSON.stringify(lists));
-        });
+        this.handleBrodcast(lists);
         break;
       }
     }
   };
   handleClientError = () => {};
   handleClientClose = () => {};
+  handleBrodcast = (lists: List[]) => {
+    this.socket.clients.forEach((client) => {
+      client.send(JSON.stringify(lists));
+    });
+  };
 }
 
 export default Socket;
