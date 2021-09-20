@@ -7,8 +7,8 @@ interface Props {
   listId: string;
   onDragOver: (
     dragStartCard: CardInfo,
-    draggedOverCardId: string | null,
-    draggedOverListId: string
+    dropableCardId: string | null,
+    dropableListId: string
   ) => void;
 }
 
