@@ -5,19 +5,51 @@ Trello clone homework는 monorepo(client, server)로 구성되어있습니다.
 
 ## 주요 기능
 
-- 새로운 리스트 생성
-  ![add list](./assets/add-list.gif)
+<table border="1" width="500" height="500">
+    <thead>
+        <tr>
+            <th colspan="2">새로운 리스트 생성</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><img src="./assets/add-list.gif" align="center"/></td>
+        </tr>
+    </tbody>
+</table>
 
-- 새로운 카드 생성
-  ![add card](./assets/add-card.gif)
+<table border="1" width="600" height="420">
+    <thead>
+        <tr>
+            <th>새로운 카드 생성</th>
+          <th>리스트 간 카드 이동</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><img src="./assets/add-card.gif" align="center" width="560px" height="336px"/></td>
+          <td><img src="./assets/move-card.gif" align="center"/></td>
+        </tr>
+    </tbody>
+</table>
 
-- 리스트 간 카드 이동 가능 (Drag & Drop)
-  ![move card](./assets/move-card.gif)
-
-- 서로 다른 클라이언트간 데이터 실시간 동기화 (Web Socket)
-  client A | client B
-  :-------------------------:|:-------------------------:
-  ![sync data](./assets/sync.gif) | ![sync data](./assets/sync2.gif)
+<table border="1" width="500" height="400">
+    <thead>
+        <tr>
+            <th colspan="2">서로 다른 클라이언트간 데이터 실시간 동기화 (Web Socket)</th>
+        </tr>
+      <tr>
+            <th>Client A</th>
+        <th>Client B</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><img src="./assets/sync.gif" align="center" /></td>
+            <td><img src="./assets/sync2.gif" align="center"/></td>
+        </tr>
+    </tbody>
+</table>
 
 ## 프로젝트 사용 기술
 
